@@ -1,0 +1,7 @@
+# Main
+__pycache__/
+env/
+*.log
+
+# Project
+.idea/
