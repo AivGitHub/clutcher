@@ -6,6 +6,8 @@
 import argparse
 import sys
 
+from torrent import Torrent
+
 
 def run() -> None:
     parser = argparse.ArgumentParser(description='Download files.')
@@ -38,7 +40,7 @@ def run() -> None:
 
     dict_args.update({'files': files})
 
-    print(dict_args)
+    pass
 
 
 if __name__ == '__main__':

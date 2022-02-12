@@ -38,6 +38,7 @@ setup(
     long_description_content_type='text/markdown',
     packages=find_packages(),
     install_requires=[
+        'bcoding==1.5',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',

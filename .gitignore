@@ -1,7 +1,10 @@
 # Main
 __pycache__/
 env/
+dist/
+clutcher.egg-info/
 *.log
+requirements.txt
 
 # Project
 .idea/
