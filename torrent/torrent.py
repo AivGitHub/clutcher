@@ -1,4 +1,5 @@
 import hashlib
+import math
 import pathlib
 import time
 
@@ -21,10 +22,9 @@ class Torrent:
 
     def __init__(self, file_path) -> None:
         # Init variables
-        self.total_length: int = 0
-        self.files: list = []
+        # This variables can be used for initializing other variables
+        # TODO: self.path_to_save should be setter for future
         self.path_to_save = pathlib.Path.cwd()
-        # self.path_to_save = pathlib.Path.home()
 
         # With setter
         self.torrent_path = file_path
@@ -43,13 +43,14 @@ class Torrent:
 
         # With setter from self.torrent_info
         self.info_hash = self.torrent_info
+        self.files = self.torrent_info
+        self.total_length = self.torrent_info
 
         # With setter other
         self.peer_id = str(time.time())
 
-        # Set dependent data
-        # Sets self.files and self.total_length
-        self.set_files()
+        # Other
+        self.pieces_amount = math.ceil(self.total_length / self.piece_length)
 
     def __str__(self) -> str:
         return str(self.torrent_path)
@@ -74,7 +75,7 @@ class Torrent:
 
     @torrent_file_data.setter
     def torrent_file_data(self, _path: pathlib.Path):
-        _bytes = _path.read_bytes()
+        _bytes: bytes = _path.read_bytes()
         _data = bdecode(_bytes)
 
         self.__torrent_file_data = _data
@@ -85,7 +86,7 @@ class Torrent:
 
     @announce_list.setter
     def announce_list(self, _torrent_file_data: dict):
-        _announce_list = []
+        _announce_list: list = []
 
         if self._ANNOUNCE_LIST in _torrent_file_data:
             _announce_list = _torrent_file_data.get(self._ANNOUNCE_LIST)
@@ -112,21 +113,44 @@ class Torrent:
     def peer_id(self, seed: str):
         self.__peer_id = hashlib.sha1(seed.encode('utf-8')).digest()
 
-    def set_files(self) -> None:
-        if self._FILES not in self.torrent_info:
-            self.files.append({
-                self._PATH: self.name,
-                self._LENGTH: self.torrent_info.get(self._LENGTH)
-            })
-            self.total_length = self.torrent_info.get(self._INFO)
-            return None
+    @property
+    def files(self) -> list:
+        return self.__files
 
-        for file in self.torrent_info.get(self._FILES):
-            _file_name = pathlib.Path(*file.get(self._PATH))
-            _file_path = (self.path_to_save / self.name / _file_name).resolve()
+    @files.setter
+    def files(self, torrent_info: dict):
+        _files: list = []
+        _name: str = torrent_info.get(self._NAME)
 
-            self.files.append({
-                self._PATH: _file_path,
-                self._LENGTH: file.get(self._LENGTH)
+        if self._FILES in torrent_info:
+            for file in torrent_info.get(self._FILES):
+                _file_name = pathlib.Path(*file.get(self._PATH))
+                _file_path = (self.path_to_save / _name / _file_name).resolve()
+
+                _files.append({
+                    self._PATH: _file_path,
+                    self._LENGTH: file.get(self._LENGTH)
+                })
+        else:
+            _files.append({
+                self._PATH: _name,
+                self._LENGTH: torrent_info.get(self._LENGTH)
             })
-            self.total_length += file.get(self._LENGTH)
+
+        self.__files = _files
+
+    @property
+    def total_length(self) -> int:
+        return self.__total_length
+
+    @total_length.setter
+    def total_length(self, torrent_info: dict):
+        _total_length: int = 0
+
+        if self._FILES in torrent_info:
+            for file in torrent_info.get(self._FILES):
+                _total_length += file.get(self._LENGTH)
+        else:
+            _total_length = torrent_info.get(self._LENGTH)
+
+        self.__total_length = _total_length
