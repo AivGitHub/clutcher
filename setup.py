@@ -39,6 +39,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'bcoding==1.5',
+        'bitstring==3.1.9',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
