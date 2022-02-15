@@ -5,7 +5,7 @@ from struct import pack, unpack
 from torrent.exception import IsNotInitialized
 
 
-class UDPTrackerProtocolMixin:
+class UDPTrackerProtocolInterface:
     ZERO = 0
 
     def __init__(self) -> None:
@@ -18,7 +18,7 @@ class UDPTrackerProtocolMixin:
         raise NotImplementedError()
 
 
-class ConnectionRequest(UDPTrackerProtocolMixin):
+class ConnectionRequest(UDPTrackerProtocolInterface):
     """ connect request:
 
         Offset  Size            Name            Value
@@ -58,7 +58,7 @@ class ConnectionRequest(UDPTrackerProtocolMixin):
         self.transaction_id, = unpack('>I', payload[12:16])
 
 
-class ConnectionResponse(UDPTrackerProtocolMixin):
+class ConnectionResponse(UDPTrackerProtocolInterface):
     """ connect response:
 
         Offset  Size            Name            Value
@@ -90,7 +90,7 @@ class ConnectionResponse(UDPTrackerProtocolMixin):
         self.connection_id, = unpack('>I', payload[8:16])
 
 
-class IPv4AnnounceRequest(UDPTrackerProtocolMixin):
+class IPv4AnnounceRequest(UDPTrackerProtocolInterface):
     """ IPv4 announce request:
 
         Offset  Size    Name    Value
@@ -153,7 +153,7 @@ class IPv4AnnounceRequest(UDPTrackerProtocolMixin):
         raise NotImplementedError()
 
 
-class IPv4AnnounceResponse(UDPTrackerProtocolMixin):
+class IPv4AnnounceResponse(UDPTrackerProtocolInterface):
     """ IPv4 announce response:
 
         Offset      Size            Name            Value
@@ -222,7 +222,7 @@ class IPv4AnnounceResponse(UDPTrackerProtocolMixin):
         self.__socket_addresses = addresses
 
 
-class ScrapeRequest(UDPTrackerProtocolMixin):
+class ScrapeRequest(UDPTrackerProtocolInterface):
     """ scrape request:
 
         Offset          Size            Name            Value
@@ -259,7 +259,7 @@ class ScrapeRequest(UDPTrackerProtocolMixin):
         # TODO: set info_hash
 
 
-class ScrapeResponse(UDPTrackerProtocolMixin):
+class ScrapeResponse(UDPTrackerProtocolInterface):
     """ scrape response:
 
         Offset      Size            Name            Value
@@ -299,7 +299,7 @@ class ScrapeResponse(UDPTrackerProtocolMixin):
         self.connection_id, = unpack('>Q', payload[8: 16])
 
 
-class ErrorResponse(UDPTrackerProtocolMixin):
+class ErrorResponse(UDPTrackerProtocolInterface):
     """ error response:
 
         Offset  Size            Name            Value

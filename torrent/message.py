@@ -5,7 +5,7 @@ import bitstring
 from torrent.exception import WrongMessageException
 
 
-class MessageMixin:
+class MessageInterface:
     """ Mixin for BitTorrent Messages protocol
 
     """
@@ -29,7 +29,7 @@ class MessageMixin:
         return type(self).__name__
 
 
-class Handshake(MessageMixin):
+class Handshake(MessageInterface):
     """ handshake: <pstrlen><pstr><reserved><info_hash><peer_id>
 
         The handshake is a required message and must be the first message transmitted by the client.
@@ -78,7 +78,7 @@ class Handshake(MessageMixin):
         return Handshake(info_hash, peer_id)
 
 
-class KeepAlive(MessageMixin):
+class KeepAlive(MessageInterface):
     """ keep-alive: <len=0000>
 
         The keep-alive message is a message with zero bytes, specified with the length prefix set to zero.
@@ -89,7 +89,7 @@ class KeepAlive(MessageMixin):
     """
     ID = None
 
-    PAYLOAD_LENGTH = MessageMixin.ZERO
+    PAYLOAD_LENGTH = MessageInterface.ZERO
     TOTAL_LENGTH = 4
 
     def __init__(self):
@@ -108,15 +108,15 @@ class KeepAlive(MessageMixin):
         return KeepAlive()
 
 
-class Choke(MessageMixin):
+class Choke(MessageInterface):
     """ choke: <len=0001><id=0>
 
         The choke message is fixed-length and has no payload.
     """
-    ID = MessageMixin.ZERO
+    ID = MessageInterface.ZERO
 
     PAYLOAD_LENGTH = 1
-    TOTAL_LENGTH = MessageMixin.LENGTH_PREFIX + PAYLOAD_LENGTH
+    TOTAL_LENGTH = MessageInterface.LENGTH_PREFIX + PAYLOAD_LENGTH
 
     def __init__(self):
         super().__init__()
@@ -134,7 +134,7 @@ class Choke(MessageMixin):
         return Choke()
 
 
-class UnChoke(MessageMixin):
+class UnChoke(MessageInterface):
     """ unchoke: <len=0001><id=1>
 
         The unchoke message is fixed-length and has no payload.
@@ -142,7 +142,7 @@ class UnChoke(MessageMixin):
     ID = 1
 
     PAYLOAD_LENGTH = 1
-    TOTAL_LENGTH = MessageMixin.LENGTH_PREFIX + PAYLOAD_LENGTH
+    TOTAL_LENGTH = MessageInterface.LENGTH_PREFIX + PAYLOAD_LENGTH
 
     def __init__(self):
         super().__init__()
@@ -160,7 +160,7 @@ class UnChoke(MessageMixin):
         return UnChoke()
 
 
-class Interested(MessageMixin):
+class Interested(MessageInterface):
     """ interested: <len=0001><id=2>
 
         The interested message is fixed-length and has no payload.
@@ -168,7 +168,7 @@ class Interested(MessageMixin):
     ID = 2
 
     PAYLOAD_LENGTH = 1
-    TOTAL_LENGTH = MessageMixin.LENGTH_PREFIX + PAYLOAD_LENGTH
+    TOTAL_LENGTH = MessageInterface.LENGTH_PREFIX + PAYLOAD_LENGTH
 
     def __init__(self):
         super().__init__()
@@ -186,7 +186,7 @@ class Interested(MessageMixin):
         return Interested()
 
 
-class NotInterested(MessageMixin):
+class NotInterested(MessageInterface):
     """ not interested: <len=0001><id=3>
 
         The not interested message is fixed-length and has no payload.
@@ -194,7 +194,7 @@ class NotInterested(MessageMixin):
     ID = 3
 
     PAYLOAD_LENGTH = 1
-    TOTAL_LENGTH = MessageMixin.LENGTH_PREFIX + PAYLOAD_LENGTH
+    TOTAL_LENGTH = MessageInterface.LENGTH_PREFIX + PAYLOAD_LENGTH
 
     def __init__(self):
         super().__init__()
@@ -212,7 +212,7 @@ class NotInterested(MessageMixin):
         return NotInterested()
 
 
-class Have(MessageMixin):
+class Have(MessageInterface):
     """ have: <len=0005><id=4><piece index>
 
         The have message is fixed length.
@@ -222,7 +222,7 @@ class Have(MessageMixin):
     ID = 4
 
     PAYLOAD_LENGTH = 5
-    TOTAL_LENGTH = MessageMixin.LENGTH_PREFIX + PAYLOAD_LENGTH
+    TOTAL_LENGTH = MessageInterface.LENGTH_PREFIX + PAYLOAD_LENGTH
 
     def __init__(self, piece_index):
         super().__init__()
@@ -241,7 +241,7 @@ class Have(MessageMixin):
         return Have(piece_index)
 
 
-class BitField(MessageMixin):
+class BitField(MessageInterface):
     """ bitfield: <len=0001+X><id=5><bitfield>
 
         The bitfield message may only be sent immediately after the handshaking sequence is completed,
@@ -297,7 +297,7 @@ class BitField(MessageMixin):
         return BitField(bitfield)
 
 
-class Request(MessageMixin):
+class Request(MessageInterface):
     """ request: <len=0013><id=6><index><begin><length>
 
         The request message is fixed length, and is used to request a block.
@@ -310,7 +310,7 @@ class Request(MessageMixin):
     ID = 6
 
     PAYLOAD_LENGTH = 13
-    TOTAL_LENGTH = MessageMixin.LENGTH_PREFIX + PAYLOAD_LENGTH
+    TOTAL_LENGTH = MessageInterface.LENGTH_PREFIX + PAYLOAD_LENGTH
 
     def __init__(self, piece_index, block_offset, block_length):
         super().__init__()
@@ -337,7 +337,7 @@ class Request(MessageMixin):
         return Request(piece_index, block_offset, block_length)
 
 
-class Piece(MessageMixin):
+class Piece(MessageInterface):
     """ piece: <len=0009+X><id=7><index><begin><block>
 
         The piece message is variable length, where X is the length of the block.
@@ -384,7 +384,7 @@ class Piece(MessageMixin):
         return Piece(block_length, piece_index, block_offset, block)
 
 
-class Cancel(MessageMixin):
+class Cancel(MessageInterface):
     """ cancel: <len=0013><id=8><index><begin><length>
 
         The cancel message is fixed length, and is used to cancel block requests.
@@ -393,7 +393,7 @@ class Cancel(MessageMixin):
     """
     ID = 8
     PAYLOAD_LENGTH = 13
-    TOTAL_LENGTH = MessageMixin.LENGTH_PREFIX + PAYLOAD_LENGTH
+    TOTAL_LENGTH = MessageInterface.LENGTH_PREFIX + PAYLOAD_LENGTH
 
     def __init__(self, piece_index, block_offset, block_length):
         super(Cancel, self).__init__()
@@ -420,7 +420,7 @@ class Cancel(MessageMixin):
         return Cancel(piece_index, block_offset, block_length)
 
 
-class Port(MessageMixin):
+class Port(MessageInterface):
     """ port: <len=0003><id=9><listen-port>
 
         The port message is sent by newer versions of the Mainline that implements a DHT tracker.
@@ -430,7 +430,7 @@ class Port(MessageMixin):
     ID = 9
 
     PAYLOAD_LENGTH = 5
-    TOTAL_LENGTH = MessageMixin.LENGTH_PREFIX + PAYLOAD_LENGTH
+    TOTAL_LENGTH = MessageInterface.LENGTH_PREFIX + PAYLOAD_LENGTH
 
     def __init__(self, port):
         super().__init__()
