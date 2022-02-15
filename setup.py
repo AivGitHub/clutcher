@@ -40,6 +40,7 @@ setup(
     install_requires=[
         'bcoding==1.5',
         'bitstring==3.1.9',
+        'Pypubsub==4.0.3',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',

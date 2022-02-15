@@ -6,7 +6,7 @@
 import argparse
 import sys
 
-from torrent import Torrent
+from clutcher.maintain import Maintain
 
 
 def run() -> None:
@@ -26,9 +26,9 @@ def run() -> None:
                         nargs=_files_nargs,
                         help='File paths')
 
-    parser.add_argument('-d', '--detached',
+    parser.add_argument('-d', '--detach',
                         required=False,
-                        help='Detached mode',
+                        help='Detach mode',
                         action='store_true')
 
     _args = parser.parse_args()
@@ -40,7 +40,8 @@ def run() -> None:
 
     dict_args.update({'files': files})
 
-    pass
+    maintain = Maintain(**dict_args)
+    maintain.start()
 
 
 if __name__ == '__main__':

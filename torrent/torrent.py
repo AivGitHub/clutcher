@@ -7,6 +7,8 @@ from bcoding import bencode, bdecode
 
 
 class Torrent:
+    """ Main Torrent class
+    """
     # Torrent files constant attributes
     _ANNOUNCE = 'announce'
     _ANNOUNCE_LIST = 'announce-list'
