@@ -8,6 +8,7 @@ from setuptools import find_packages, setup
 
 MINIMAL_PY_VERSION = (3, 6)
 
+
 if sys.version_info < MINIMAL_PY_VERSION:
     raise RuntimeError('This app works only with Python {}+'.format('.'.join(map(str, MINIMAL_PY_VERSION))))
 
@@ -33,7 +34,7 @@ setup(
     license='MIT',
     author='Ivan Koldakov',
     author_email='coldie322@gmail.com',
-    description='Clutcher',
+    description='Torrent client',
     long_description=get_file('README.md'),
     long_description_content_type='text/markdown',
     packages=find_packages(),
@@ -41,6 +42,9 @@ setup(
         'bcoding==1.5',
         'bitstring==3.1.9',
         'Pypubsub==4.0.3',
+        'PyQt5==5.15.6',
+        'PyQt5-Qt5==5.15.2',
+        'PyQt5-sip==12.9.1',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',

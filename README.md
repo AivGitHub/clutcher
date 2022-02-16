@@ -1,11 +1,17 @@
 # Clutcher
-Project to work with data in the Internet.
+Project to work with data in the Internet.\
+It will be a Torrent client and the Internet Browser (later).
 
 ## Installation
 ```pip install clutcher```
 
 ## Information
-It is a Pre-alpha version.
+- It is a Pre-alpha version.
+- GUI development started. I use PyQt5.
+- IDE for generating code is/will NOT be included in this project.
+- Now you can run GUI with -g, --gui option
+- Option -d, --detach does not work yet
+- I haven't added to PyPI yet
 
 **Steps**:
 1. Torrent console client.

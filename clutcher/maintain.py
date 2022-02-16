@@ -4,7 +4,7 @@ import threading
 from torrent.torrent import Torrent
 
 
-class Maintain(object):
+class Maintain:
 
     def __init__(self, **kwargs) -> None:
         # kwargs arguments
@@ -17,7 +17,7 @@ class Maintain(object):
 
     def process(self, torrent):
         print(torrent.name)
-        print("Task Executed {}".format(threading.current_thread()))
+        print(f'Task Executed {threading.current_thread()}')
 
     def start(self):
         with ThreadPoolExecutor() as executor:
