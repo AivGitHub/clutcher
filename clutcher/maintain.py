@@ -1,7 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor
 import threading
 
-from torrent.torrent import Torrent
+from torrent.structure.torrent import Torrent
 
 
 class Maintain:
@@ -13,10 +13,11 @@ class Maintain:
 
         # Other
         self.torrents = [Torrent(file) for file in self.files]
+
         self.tasks = []
 
     def process(self, torrent):
-        print(torrent.name)
+
         print(f'Task Executed {threading.current_thread()}')
 
     def start(self):

@@ -1,2 +1,2 @@
 from torrent.exception import WrongMessageException
-from torrent.torrent import Torrent
+from torrent.structure.torrent import Torrent

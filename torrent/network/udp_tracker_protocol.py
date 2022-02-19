@@ -6,6 +6,8 @@ from torrent.exception import IsNotInitialized
 
 
 class UDPTrackerProtocolInterface:
+    """ Interface for UDP Tracker protocol
+    """
     ZERO = 0
 
     def __init__(self) -> None:
