@@ -39,6 +39,7 @@ setup(
     long_description_content_type='text/markdown',
     packages=find_packages(),
     install_requires=[
+        'bencode.py==4.0.0',
         'PyQt5==5.15.6',
         'PyQt5-Qt5==5.15.2',
         'PyQt5-sip==12.9.1',

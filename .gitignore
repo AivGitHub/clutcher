@@ -8,3 +8,4 @@ requirements.txt
 
 # Project
 .idea/
+database/data/clutcher.db
