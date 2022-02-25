@@ -26,7 +26,7 @@ def get_version():
 setup(
     name='clutcher',
     version=get_version(),
-    url='https://github.com/AivGitHub/social_downloader',
+    url='https://github.com/AivGitHub/clutcher',
     project_urls={
         'Source': 'https://github.com/AivGitHub/clutcher',
         'Bug Tracker': 'https://github.com/AivGitHub/clutcher/issues',
